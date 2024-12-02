@@ -33,6 +33,7 @@
 ## Запуск
 
 ### Запуск docker compose
+
 ```bash
 docker-compose -f ./docker/docker-compose.yml up -d
 ```
@@ -45,3 +46,9 @@ docker-compose -f ./docker/docker-compose.yml up -d
 * **Maintenance database:** auth_service 
 * **User:** pguser 
 * **Password:** 1212
+
+### Включение отправки предупреждений на почту
+
+Для включение отправки предупреждений на почту необходимо:
+
+* Прописать в config.env `SMTP_ENABLE="on"`
