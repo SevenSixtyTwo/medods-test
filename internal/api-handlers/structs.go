@@ -14,7 +14,6 @@ type CustomContext struct {
 
 type TokenRequest struct {
 	GUID         uuid.UUID `json:"guid"`
-	AccessToken  string    `json:"acces_token"`
 	RefreshToken string    `json:"refresh_token"`
 	IPAddress    string    `json:"ip_address"`
 }
