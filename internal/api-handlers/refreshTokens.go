@@ -65,7 +65,7 @@ func RefreshTokens(c echo.Context) error {
 		return c.String(http.StatusInternalServerError, "create token")
 	}
 
-	refreshToken, refreshTokenHashed, err := tokens.CreateRefreshToken("secret")
+	refreshToken, refreshTokenHashed, err := tokens.CreateRefreshToken()
 	if err != nil {
 		log.Error("create refresh token", "error", err)
 		return c.String(http.StatusInternalServerError, "create refresh token")
