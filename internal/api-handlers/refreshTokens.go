@@ -3,6 +3,7 @@ package apihandlers
 import (
 	ctxvalue "medods-test/internal/ctx-value"
 	dbhandlers "medods-test/internal/db-handlers"
+	"medods-test/internal/env"
 	"medods-test/internal/smtp"
 	"medods-test/internal/tokens"
 	"net/http"
@@ -41,15 +42,17 @@ func RefreshTokens(c echo.Context) error {
 	}
 
 	if ipFromDB != refreshRequest.IPAddress {
-		email, err := dbhandlers.GetEmail(cc.Ctx, refreshRequest.GUID)
-		if err != nil {
-			log.Error("get email", "error", err)
-			return c.String(http.StatusInternalServerError, "failed to send warning")
-		}
+		if env.SMTP_ENABLE == "on" {
+			email, err := dbhandlers.GetEmail(cc.Ctx, refreshRequest.GUID)
+			if err != nil {
+				log.Error("get email", "error", err)
+				return c.String(http.StatusInternalServerError, "failed to send warning")
+			}
 
-		if err := smtp.SendWarning(email, refreshRequest.IPAddress); err != nil {
-			log.Error("send warning", "error", err)
-			return c.String(http.StatusInternalServerError, "failed to send warning")
+			if err := smtp.SendWarning(email, refreshRequest.IPAddress); err != nil {
+				log.Error("send warning", "error", err)
+				return c.String(http.StatusInternalServerError, "failed to send warning")
+			}
 		}
 
 		log.Info("different ip address")
